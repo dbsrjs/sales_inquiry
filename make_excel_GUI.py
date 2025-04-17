@@ -2,6 +2,8 @@ import os
 import pandas as pd
 import tkinter as tk
 from tkinter import filedialog, messagebox
+from openpyxl import load_workbook
+from openpyxl.styles import PatternFill
 
 # GUI 창 숨기기
 root = tk.Tk()
@@ -73,6 +75,14 @@ try:
     output_dir = os.path.dirname(file1)
     output_path = os.path.join(output_dir, '결과_수수료합.xlsx')
     merged.to_excel(output_path, index=False)
+
+    # ✅ 첫 행 배경색 칠하기
+    wb = load_workbook(output_path)
+    ws = wb.active
+    yellow_fill = PatternFill(start_color="FFFF99", end_color="FFFF99", fill_type="solid")
+    for cell in ws[1]:
+        cell.fill = yellow_fill
+    wb.save(output_path)
 
     messagebox.showinfo("완료", f"✅ 저장 완료:\n{output_path}")
 
